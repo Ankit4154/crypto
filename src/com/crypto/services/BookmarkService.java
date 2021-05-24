@@ -78,8 +78,10 @@ public class BookmarkService {
 		bookmarkDao.saveBookmark(userBookmark);
 	}
 
-	public void setKidFriendlyStatus(String kidFriendlyStatus, Bookmark bookmark) {
+	public void setKidFriendlyStatus(User user, String kidFriendlyStatus, Bookmark bookmark) {
 		bookmark.setKidFriendlyStatus(kidFriendlyStatus);
-		System.out.println("Kid Friendly Status : " + kidFriendlyStatus + ", " + bookmark);
+		bookmark.setKidFriendlyMarkedBy(user);
+		System.out.println(
+				"Kid Friendly Status : " + kidFriendlyStatus + ", Marked by : " + user.getEmail() + ", " + bookmark);
 	}
 }

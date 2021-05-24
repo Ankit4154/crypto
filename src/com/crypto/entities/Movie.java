@@ -59,8 +59,7 @@ public class Movie extends Bookmark {
 
 	@Override
 	public boolean isKidFriendly() {
-		if (this.genre == MovieGenre.HORROR || this.genre == MovieGenre.GAY_AND_LESBIAN
-				|| this.genre == MovieGenre.DOCUMENTARIES) {
+		if (this.genre == MovieGenre.HORROR || this.genre == MovieGenre.DOCUMENTARIES) {
 			return false;
 		}
 		return true;

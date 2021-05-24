@@ -26,14 +26,7 @@ class MovieTest {
 		isKidFriendly = movie.isKidFriendly();
 		assertFalse("Movie is documentaries, false for kids", isKidFriendly);
 
-		// Test 3 - if GAY LESBIANS -- false
-		movie = BookmarkService.getInstance().createMovie(3000, "Citizen Kane", "", 1941,
-				new String[] { "Orson Welles", "Joseph Cotten" }, new String[] { "Orson Welles" },
-				MovieGenre.GAY_AND_LESBIAN, 8.5);
-		isKidFriendly = movie.isKidFriendly();
-		assertFalse("Movie is gay Lesbian, false for kids", isKidFriendly);
-
-		// Test 4 - if COMEDY -- true
+		// Test 3 - if COMEDY -- true
 		movie = BookmarkService.getInstance().createMovie(3000, "Citizen Kane", "", 1941,
 				new String[] { "Orson Welles", "Joseph Cotten" }, new String[] { "Orson Welles" }, MovieGenre.COMEDY,
 				8.5);

@@ -37,16 +37,17 @@ public class Launch {
 		}
 	}
 
-	private static void startBookmarking() {
-		System.out.println("\n 2. Bookmarking ...");
+	private static void start() {
+		//System.out.println("\n 2. Bookmarking ...");
 		for (User user : users) {
-			View.bookmark(user, bookmarks);
+			View.browse(user, bookmarks);
+			//View.bookmark(user, bookmarks);
 		}
 	}
 
 	public static void main(String args[]) {
 		loadData();
-		startBookmarking();
+		start();
 	}
 
 }

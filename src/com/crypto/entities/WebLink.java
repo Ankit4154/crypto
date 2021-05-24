@@ -1,7 +1,5 @@
 package com.crypto.entities;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.crypto.partner.Shareable;
 
 public class WebLink extends Bookmark implements Shareable {

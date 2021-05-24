@@ -19,4 +19,8 @@ public class BookmarkController {
 		BookmarkService.getInstance().saveUserBookmark(user, bookmark);
 	}
 
+	public void setKidFriendlyStatus(String kidFriendlyStatus, Bookmark bookmark) {
+		BookmarkService.getInstance().setKidFriendlyStatus(kidFriendlyStatus, bookmark);		
+	}
+
 }

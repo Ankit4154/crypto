@@ -5,6 +5,7 @@ import com.crypto.constants.UserType;
 import com.crypto.controllers.BookmarkController;
 import com.crypto.entities.Bookmark;
 import com.crypto.entities.User;
+import com.crypto.partner.Shareable;
 
 public class View {
 
@@ -33,9 +34,24 @@ public class View {
 							BookmarkController.getInstance().setKidFriendlyStatus(user, kidFriendlyStatus, bookmark);
 						}
 					}
+					// Sharing
+					if(bookmark.getKidFriendlyStatus().equals(KidFriendlyStatus.APPROVED)
+							&& (bookmark instanceof Shareable)){
+						boolean isShared = getShareDecision(bookmark);
+						if(isShared) {
+							BookmarkController.getInstance().share(user,bookmark);
+						}
+					}
 				}
+				
 			}
 		}
+	}
+
+	// TODO: Below methods simulate user input.
+	// After IO we take input from via console.
+	private static boolean getShareDecision(Bookmark bookmark) {
+		return Math.random() < 0.5 ? true : false;
 	}
 
 	private static String getKidFriendlyStatusDecision(Bookmark bookmark) {

@@ -1,11 +1,11 @@
 package com.crypto;
-
+/*
 import org.apache.commons.lang3.StringUtils;
-
 import com.crypto.constants.BookGenre;
-import com.crypto.constants.Gender;
 import com.crypto.constants.MovieGenre;
 import com.crypto.constants.UserType;
+*/
+import com.crypto.constants.Gender;
 import com.crypto.entities.Bookmark;
 import com.crypto.entities.User;
 import com.crypto.entities.UserBookmark;
@@ -71,12 +71,12 @@ public class DataStore {
 
 	private static void loadWebLinks() {
 		
-		String[] data = new String[TOTAL_USER_COUNT];
+		String[] data = new String[BOOKMARK_COUNT_PER_TYPE];
 		IOUtil.read(data, "Web Link");
-		int rowNum = 0;
+		int colNum = 0;
 		for(String row : data) {
 			String[] values = row.split("\t");
-			bookmarks[0][rowNum++] = BookmarkService.getInstance().createWebLink(Long.parseLong(values[0]),values[1],values[2],values[3]);
+			bookmarks[0][colNum++] = BookmarkService.getInstance().createWebLink(Long.parseLong(values[0]),values[1],values[2],values[3]);
 		}
 		/*
 		bookmarks[0][0] = BookmarkService.getInstance().createWebLink(2000, "Taming Tiger, Part 2",
@@ -97,12 +97,12 @@ public class DataStore {
 
 	private static void loadBooks() {
 		
-		String[] data = new String[TOTAL_USER_COUNT];
+		String[] data = new String[BOOKMARK_COUNT_PER_TYPE];
 		IOUtil.read(data, "Book");
-		int rowNum = 0;
+		int colNum = 0;
 		for(String row : data) {
 			String[] values = row.split("\t");
-			bookmarks[2][rowNum++] = BookmarkService.getInstance().createBook(Long.parseLong(values[0]),values[1],"",Integer.parseInt(values[2]),values[3],values[4].split(","),values[5],Double.parseDouble(values[6]));
+			bookmarks[2][colNum++] = BookmarkService.getInstance().createBook(Long.parseLong(values[0]),values[1],"",Integer.parseInt(values[2]),values[3],values[4].split(","),values[5],Double.parseDouble(values[6]));
 		}
 		/*
 		bookmarks[2][0] = BookmarkService.getInstance().createBook(4000, "Walden", "", 1854, "Wilder Publications",
@@ -121,12 +121,12 @@ public class DataStore {
 
 	private static void loadMovies() {
 		
-		String[] data = new String[TOTAL_USER_COUNT];
+		String[] data = new String[BOOKMARK_COUNT_PER_TYPE];
 		IOUtil.read(data, "Movie");
-		int rowNum = 0;
+		int colNum = 0;
 		for(String row : data) {
 			String[] values = row.split("\t");
-			bookmarks[1][rowNum++] = BookmarkService.getInstance().createMovie(Long.parseLong(values[0]),values[1],"",Integer.parseInt(values[2]),values[3].split(","),values[4].split(","),values[5],Double.parseDouble(values[6]));
+			bookmarks[1][colNum++] = BookmarkService.getInstance().createMovie(Long.parseLong(values[0]),values[1],"",Integer.parseInt(values[2]),values[3].split(","),values[4].split(","),values[5],Double.parseDouble(values[6]));
 		}
 		/*
 		bookmarks[1][0] = BookmarkService.getInstance().createMovie(3000, "Citizen Kane", "", 1941,

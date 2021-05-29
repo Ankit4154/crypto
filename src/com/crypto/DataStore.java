@@ -1,5 +1,7 @@
 package com.crypto;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.crypto.constants.BookGenre;
 import com.crypto.constants.Gender;
 import com.crypto.constants.MovieGenre;
@@ -9,6 +11,7 @@ import com.crypto.entities.User;
 import com.crypto.entities.UserBookmark;
 import com.crypto.services.BookmarkService;
 import com.crypto.services.UserService;
+import com.crypto.util.IOUtil;
 
 public class DataStore {
 
@@ -38,7 +41,22 @@ public class DataStore {
 	}
 
 	private static void loadUsers() {
-		users[0] = UserService.getInstance().createUser(1000, "user0@crypto.com", "test", "Ankit", "Singh", Gender.MALE,
+		
+		String[] data = new String[TOTAL_USER_COUNT];
+		IOUtil.read(data, "User");
+		int rowNum = 0;
+		for(String row : data) {
+			String[] values = row.split("\t");
+			int gender = Gender.MALE;
+			if(values[5].equals("f")) {
+				gender = Gender.FEMALE;
+				
+			}else if(values[5].equals("t")) {
+				gender = Gender.OTHERS;
+			}
+			users[rowNum++] = UserService.getInstance().createUser(Long.parseLong(values[0]),values[1],values[2],values[3],values[4],gender,values[6]);
+		}
+		/*users[0] = UserService.getInstance().createUser(1000, "user0@crypto.com", "test", "Ankit", "Singh", Gender.MALE,
 				UserType.CHIEF_EDITOR);
 		users[1] = UserService.getInstance().createUser(1001, "user1@crypto.com", "test", "Abhishek", "Tiwari",
 				Gender.MALE, UserType.USER);
@@ -48,9 +66,19 @@ public class DataStore {
 				Gender.FEMALE, UserType.EDITOR);
 		users[4] = UserService.getInstance().createUser(1004, "user4@crypto.com", "test", "Pooja", "Rathi",
 				Gender.FEMALE, UserType.USER);
+			*/
 	}
 
 	private static void loadWebLinks() {
+		
+		String[] data = new String[TOTAL_USER_COUNT];
+		IOUtil.read(data, "Web Link");
+		int rowNum = 0;
+		for(String row : data) {
+			String[] values = row.split("\t");
+			bookmarks[0][rowNum++] = BookmarkService.getInstance().createWebLink(Long.parseLong(values[0]),values[1],values[2],values[3]);
+		}
+		/*
 		bookmarks[0][0] = BookmarkService.getInstance().createWebLink(2000, "Taming Tiger, Part 2",
 				"http://www.javaworld.com/article/2072759/core-java/taming-tiger--part-2.html",
 				"http://www.javaworld.com");
@@ -64,9 +92,43 @@ public class DataStore {
 				"http://cs.brown.edu/courses/cs161/papers/j-nio-ltr.pdf", "http://cs.brown.edu");
 		bookmarks[0][4] = BookmarkService.getInstance().createWebLink(2004, "Virtual Hosting and Tomcat",
 				"http://tomcat.apache.org/tomcat-6.0-doc/virtual-hosting-howto.html", "http://tomcat.apache.org");
+		*/
 	}
 
 	private static void loadBooks() {
+		
+		String[] data = new String[TOTAL_USER_COUNT];
+		IOUtil.read(data, "Book");
+		int rowNum = 0;
+		for(String row : data) {
+			String[] values = row.split("\t");
+			bookmarks[2][rowNum++] = BookmarkService.getInstance().createBook(Long.parseLong(values[0]),values[1],"",Integer.parseInt(values[2]),values[3],values[4].split(","),values[5],Double.parseDouble(values[6]));
+		}
+		/*
+		bookmarks[2][0] = BookmarkService.getInstance().createBook(4000, "Walden", "", 1854, "Wilder Publications",
+				new String[] { "Henry David Thoreau" }, BookGenre.PHILOSOPHY, 4.3);
+		bookmarks[2][1] = BookmarkService.getInstance().createBook(4001, "Self-Reliance and Other Essays", "", 1993,
+				"Dover Publications", new String[] { "Ralph Waldo Emerson" }, BookGenre.PHILOSOPHY, 4.5);
+		bookmarks[2][2] = BookmarkService.getInstance().createBook(4002, "Light From Many Lamps", "", 1854,
+				"Touchstone", new String[] { "Lillian Eichler Watson" }, BookGenre.PHILOSOPHY, 5.0);
+		bookmarks[2][3] = BookmarkService.getInstance().createBook(4003, "Head First Design Patterns", "", 1854,
+				"O'Reilly Media", new String[] { "Eric Freeman", "Bert Bates", "Kathy Sierra", "Elisabeth Robson" },
+				BookGenre.TECHNICAL, 4.5);
+		bookmarks[2][4] = BookmarkService.getInstance().createBook(4004, "Effective Java Programming Language Guide",
+				"", 1854, "Prentice Hall", new String[] { "Joshua Bloch" }, BookGenre.TECHNICAL, 4.9);
+		*/
+	}
+
+	private static void loadMovies() {
+		
+		String[] data = new String[TOTAL_USER_COUNT];
+		IOUtil.read(data, "Movie");
+		int rowNum = 0;
+		for(String row : data) {
+			String[] values = row.split("\t");
+			bookmarks[1][rowNum++] = BookmarkService.getInstance().createMovie(Long.parseLong(values[0]),values[1],"",Integer.parseInt(values[2]),values[3].split(","),values[4].split(","),values[5],Double.parseDouble(values[6]));
+		}
+		/*
 		bookmarks[1][0] = BookmarkService.getInstance().createMovie(3000, "Citizen Kane", "", 1941,
 				new String[] { "Orson Welles", "Joseph Cotten" }, new String[] { "Orson Welles" }, MovieGenre.CLASSICS,
 				8.5);
@@ -81,20 +143,7 @@ public class DataStore {
 		bookmarks[1][4] = BookmarkService.getInstance().createMovie(3004, "Ikiru", "", 1952,
 				new String[] { "Takashi Shimura", "Minoru Chiaki" }, new String[] { "Akira Kurosawa" },
 				MovieGenre.CLASSICS, 8.4);
-	}
-
-	private static void loadMovies() {
-		bookmarks[2][0] = BookmarkService.getInstance().createBook(4000, "Walden", "", 1854, "Wilder Publications",
-				new String[] { "Henry David Thoreau" }, BookGenre.PHILOSOPHY, 4.3);
-		bookmarks[2][1] = BookmarkService.getInstance().createBook(4001, "Self-Reliance and Other Essays", "", 1993,
-				"Dover Publications", new String[] { "Ralph Waldo Emerson" }, BookGenre.PHILOSOPHY, 4.5);
-		bookmarks[2][2] = BookmarkService.getInstance().createBook(4002, "Light From Many Lamps", "", 1854,
-				"Touchstone", new String[] { "Lillian Eichler Watson" }, BookGenre.PHILOSOPHY, 5.0);
-		bookmarks[2][3] = BookmarkService.getInstance().createBook(4003, "Head First Design Patterns", "", 1854,
-				"O'Reilly Media", new String[] { "Eric Freeman", "Bert Bates", "Kathy Sierra", "Elisabeth Robson" },
-				BookGenre.TECHNICAL, 4.5);
-		bookmarks[2][4] = BookmarkService.getInstance().createBook(4004, "Effective Java Programming Language Guide",
-				"", 1854, "Prentice Hall", new String[] { "Joshua Bloch" }, BookGenre.TECHNICAL, 4.9);
+		*/
 	}
 
 	public static void add(UserBookmark userBookmark) {

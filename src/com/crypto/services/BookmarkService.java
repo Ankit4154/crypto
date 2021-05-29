@@ -1,5 +1,8 @@
 package com.crypto.services;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
 import com.crypto.dao.BookmarkDao;
 import com.crypto.entities.Book;
 import com.crypto.entities.Bookmark;
@@ -7,6 +10,8 @@ import com.crypto.entities.Movie;
 import com.crypto.entities.User;
 import com.crypto.entities.UserBookmark;
 import com.crypto.entities.WebLink;
+import com.crypto.util.HttpConnect;
+import com.crypto.util.IOUtil;
 
 public class BookmarkService {
 	private static BookmarkService instance = new BookmarkService();
@@ -74,7 +79,23 @@ public class BookmarkService {
 		UserBookmark userBookmark = new UserBookmark();
 		userBookmark.setUser(user);
 		userBookmark.setBookmark(bookmark);
+		
+		if(bookmark instanceof WebLink) {
+			try {
+				String url = ((WebLink)bookmark).getUrl();
+				if(!url.endsWith(".pdf")) {
+					String webPage = HttpConnect.download(url);
+					if(webPage != null) {
+						IOUtil.write(webPage, bookmark.getId());
+					}
+				}
 
+			} catch (MalformedURLException | URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		bookmarkDao.saveBookmark(userBookmark);
 	}
 

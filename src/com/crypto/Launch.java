@@ -1,5 +1,7 @@
 package com.crypto;
 
+import java.util.List;
+
 import com.crypto.entities.Bookmark;
 import com.crypto.entities.User;
 import com.crypto.services.BookmarkService;
@@ -7,8 +9,8 @@ import com.crypto.services.UserService;
 
 public class Launch {
 
-	private static User[] users;
-	private static Bookmark[][] bookmarks;
+	private static List<User> users;
+	private static List<List<Bookmark>> bookmarks;
 
 	private static void loadData() {
 		System.out.println("1. Loading Data ...");
@@ -24,7 +26,7 @@ public class Launch {
 	}
 
 	private static void printBookmarkData() {
-		for (Bookmark[] bookmarkList : bookmarks) {
+		for (List<Bookmark> bookmarkList : bookmarks) {
 			for (Bookmark bookmark : bookmarkList) {
 				System.out.println(bookmark);
 			}

@@ -2,6 +2,7 @@ package com.crypto.services;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import com.crypto.dao.BookmarkDao;
 import com.crypto.entities.Book;
@@ -71,7 +72,7 @@ public class BookmarkService {
 
 	}
 
-	public Bookmark[][] getBookmarks() {
+	public List<List<Bookmark>> getBookmarks() {
 		return bookmarkDao.getBookmarks();
 	}
 
@@ -79,7 +80,7 @@ public class BookmarkService {
 		UserBookmark userBookmark = new UserBookmark();
 		userBookmark.setUser(user);
 		userBookmark.setBookmark(bookmark);
-		
+		// If weblink, fetch URL and download the webpage.
 		if(bookmark instanceof WebLink) {
 			try {
 				String url = ((WebLink)bookmark).getUrl();

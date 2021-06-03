@@ -1,5 +1,7 @@
 package com.crypto.services;
 
+import java.util.List;
+
 import com.crypto.dao.UserDao;
 import com.crypto.entities.User;
 
@@ -30,7 +32,7 @@ public class UserService extends User {
 		return user;
 	}
 	
-	public User[] getUsers() {
+	public List<User> getUsers() {
 		return userDao.getUsers();
 	}
 

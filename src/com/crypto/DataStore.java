@@ -3,6 +3,7 @@ package com.crypto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.crypto.constants.BookGenre;
 /*
 import org.apache.commons.lang3.StringUtils;
 import com.crypto.constants.BookGenre;
@@ -10,6 +11,7 @@ import com.crypto.constants.MovieGenre;
 import com.crypto.constants.UserType;
 */
 import com.crypto.constants.Gender;
+import com.crypto.constants.MovieGenre;
 import com.crypto.entities.Bookmark;
 import com.crypto.entities.User;
 import com.crypto.entities.UserBookmark;
@@ -50,7 +52,7 @@ public class DataStore {
 		IOUtil.read(data, "User");
 		for (String row : data) {
 			String[] values = row.split("\t");
-			int gender = Gender.MALE;
+			Gender gender = Gender.MALE;
 			if (values[5].equals("f")) {
 				gender = Gender.FEMALE;
 
@@ -121,7 +123,7 @@ public class DataStore {
 		for (String row : data) {
 			String[] values = row.split("\t");
 			Bookmark bookmark = BookmarkService.getInstance().createBook(Long.parseLong(values[0]), values[1], "",
-					Integer.parseInt(values[2]), values[3], values[4].split(","), values[5],
+					Integer.parseInt(values[2]), values[3], values[4].split(","), BookGenre.valueOf(values[5]),
 					Double.parseDouble(values[6]));
 			bookmarkList.add(bookmark);
 		}
@@ -154,7 +156,7 @@ public class DataStore {
 		for (String row : data) {
 			String[] values = row.split("\t");
 			Bookmark bookmark = BookmarkService.getInstance().createMovie(Long.parseLong(values[0]), values[1], "",
-					Integer.parseInt(values[2]), values[3].split(","), values[4].split(","), values[5],
+					Integer.parseInt(values[2]), values[3].split(","), values[4].split(","), MovieGenre.valueOf(values[5]),
 					Double.parseDouble(values[6]));
 			bookmarkList.add(bookmark);
 		}

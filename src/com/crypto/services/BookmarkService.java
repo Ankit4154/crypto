@@ -4,6 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import com.crypto.constants.BookGenre;
+import com.crypto.constants.KidFriendlyStatus;
+import com.crypto.constants.MovieGenre;
 import com.crypto.dao.BookmarkDao;
 import com.crypto.entities.Book;
 import com.crypto.entities.Bookmark;
@@ -26,7 +29,7 @@ public class BookmarkService {
 	}
 
 	public Movie createMovie(long id, String title, String profileUrl, int releaseYear, String[] cast,
-			String[] directors, String genre, double imdbRating) {
+			String[] directors, MovieGenre genre, double imdbRating) {
 
 		Movie movie = new Movie();
 
@@ -44,7 +47,7 @@ public class BookmarkService {
 	}
 
 	public Book createBook(long id, String title, String profileUrl, int publicationYear, String publisher,
-			String[] authors, String genre, double amazonRating) {
+			String[] authors, BookGenre genre, double amazonRating) {
 
 		Book book = new Book();
 		book.setId(id);
@@ -100,7 +103,7 @@ public class BookmarkService {
 		bookmarkDao.saveBookmark(userBookmark);
 	}
 
-	public void setKidFriendlyStatus(User user, String kidFriendlyStatus, Bookmark bookmark) {
+	public void setKidFriendlyStatus(User user, KidFriendlyStatus kidFriendlyStatus, Bookmark bookmark) {
 		bookmark.setKidFriendlyStatus(kidFriendlyStatus);
 		bookmark.setKidFriendlyMarkedBy(user);
 		System.out.println(

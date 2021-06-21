@@ -2,6 +2,7 @@ package com.crypto.services;
 
 import java.util.List;
 
+import com.crypto.constants.Gender;
 import com.crypto.dao.UserDao;
 import com.crypto.entities.User;
 
@@ -18,7 +19,7 @@ public class UserService extends User {
 	}
 
 	public User createUser(long id, String email, String password, String firstName, 
-			String lastName, int gender, String userType) {
+			String lastName, Gender gender, String userType) {
 		
 		User user = new User();
 		user.setId(id);

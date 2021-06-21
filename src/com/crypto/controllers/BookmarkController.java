@@ -1,5 +1,6 @@
 package com.crypto.controllers;
 
+import com.crypto.constants.KidFriendlyStatus;
 import com.crypto.entities.Bookmark;
 import com.crypto.entities.User;
 import com.crypto.services.BookmarkService;
@@ -19,7 +20,7 @@ public class BookmarkController {
 		BookmarkService.getInstance().saveUserBookmark(user, bookmark);
 	}
 
-	public void setKidFriendlyStatus(User user, String kidFriendlyStatus, Bookmark bookmark) {
+	public void setKidFriendlyStatus(User user, KidFriendlyStatus kidFriendlyStatus, Bookmark bookmark) {
 		BookmarkService.getInstance().setKidFriendlyStatus(user, kidFriendlyStatus, bookmark);		
 	}
 

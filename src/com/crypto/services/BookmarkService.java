@@ -83,7 +83,9 @@ public class BookmarkService {
 		UserBookmark userBookmark = new UserBookmark();
 		userBookmark.setUser(user);
 		userBookmark.setBookmark(bookmark);
+		
 		// If weblink, fetch URL and download the webpage.
+		/* Downloading HTML pages with 1 thread.
 		if(bookmark instanceof WebLink) {
 			try {
 				String url = ((WebLink)bookmark).getUrl();
@@ -98,7 +100,7 @@ public class BookmarkService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
 		bookmarkDao.saveBookmark(userBookmark);
 	}

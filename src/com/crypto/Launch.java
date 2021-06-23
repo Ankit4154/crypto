@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.crypto.entities.Bookmark;
 import com.crypto.entities.User;
+import com.crypto.jobs.WebPageDownloaderTask;
 import com.crypto.services.BookmarkService;
 import com.crypto.services.UserService;
 
@@ -50,6 +51,15 @@ public class Launch {
 	public static void main(String args[]) {
 		loadData();
 		start();
+		
+		// run background jobs
+		runDownloaderJob();
+	}
+
+	private static void runDownloaderJob() {
+		WebPageDownloaderTask task = new WebPageDownloaderTask(true);
+		(new Thread(task)).start();
+		
 	}
 
 }

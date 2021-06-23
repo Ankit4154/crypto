@@ -27,7 +27,7 @@ public class BookmarkDao {
 		}
 		return result;
 	}
-	
+	// Get weblink with particular download status value
 	public List<WebLink> getWebLink(WebLink.DownloadStatus downloadStatus){
 		List<WebLink> result = new ArrayList<>();
 		List<WebLink> allWebLinks = getAllWebLinks();

@@ -1,5 +1,9 @@
 package com.crypto;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +48,25 @@ public class DataStore {
 		loadWebLinks();
 		loadMovies();
 		loadBooks();
+		/*
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		try(Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost?useSSL=false","sa2","Test@123");
+				Statement stmt = conn.createStatement()){
+			//loadUsers(stmt);
+			//loadWebLinks(stmt);
+			//loadMovies(stmt);
+			//loadBooks(stmt);
+			System.out.println("testing");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	private static void loadUsers() {

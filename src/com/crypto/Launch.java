@@ -50,10 +50,10 @@ public class Launch {
 
 	public static void main(String args[]) {
 		loadData();
-		start();
+		//start();
 		
 		// run background jobs
-		runDownloaderJob();
+		//runDownloaderJob();
 	}
 
 	private static void runDownloaderJob() {

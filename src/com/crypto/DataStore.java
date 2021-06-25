@@ -1,7 +1,9 @@
 package com.crypto;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -48,25 +50,40 @@ public class DataStore {
 		loadWebLinks();
 		loadMovies();
 		loadBooks();
-		/*
+		
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		try(Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost?useSSL=false","sa2","Test@123");
-				Statement stmt = conn.createStatement()){
+		System.out.println("this loaded");
+		try{
+			Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost","sa2","Test@123");
+			System.out.println("stuck");
+			Statement stmt = conn.createStatement();
+			if (conn != null) {
+                DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
+                System.out.println("Driver name: " + dm.getDriverName());
+                System.out.println("Driver version: " + dm.getDriverVersion());
+                System.out.println("Product name: " + dm.getDatabaseProductName());
+                System.out.println("Product version: " + dm.getDatabaseProductVersion());
+            }
+			String query = "select * from [Mytable].[dbo].[credit_scores]";
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("S.No \t| empType \t| creditScore ");
+			System.out.println("----------------------------------");
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" \t| "+rs.getString(2)+" \t| "+rs.getInt(3));
+			}
 			//loadUsers(stmt);
 			//loadWebLinks(stmt);
 			//loadMovies(stmt);
 			//loadBooks(stmt);
-			System.out.println("testing");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 	}
 
 	private static void loadUsers() {

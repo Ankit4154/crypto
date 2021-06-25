@@ -50,35 +50,34 @@ public class DataStore {
 		loadWebLinks();
 		loadMovies();
 		loadBooks();
-		
+
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		}catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println("this loaded");
-		try{
-			Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost","sa2","Test@123");
-			System.out.println("stuck");
+		try {
+			Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Mytable", "sa2",
+					"Test@123");
 			Statement stmt = conn.createStatement();
 			if (conn != null) {
-                DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
-                System.out.println("Driver name: " + dm.getDriverName());
-                System.out.println("Driver version: " + dm.getDriverVersion());
-                System.out.println("Product name: " + dm.getDatabaseProductName());
-                System.out.println("Product version: " + dm.getDatabaseProductVersion());
-            }
-			String query = "select * from [Mytable].[dbo].[credit_scores]";
+				DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
+				System.out.println("Driver name: " + dm.getDriverName());
+				System.out.println("Driver version: " + dm.getDriverVersion());
+				System.out.println("Product name: " + dm.getDatabaseProductName());
+				System.out.println("Product version: " + dm.getDatabaseProductVersion());
+			}
+			String query = "select * from [dbo].[credit_scores]";
 			ResultSet rs = stmt.executeQuery(query);
 			System.out.println("S.No \t| empType \t| creditScore ");
-			System.out.println("----------------------------------");
-			while(rs.next()) {
-				System.out.println(rs.getInt(1)+" \t| "+rs.getString(2)+" \t| "+rs.getInt(3));
+			System.out.println("----------------------------------------");
+			while (rs.next()) {
+				System.out.println(rs.getInt(1) + " \t| " + rs.getString(2) + " \t| " + rs.getInt(3));
 			}
-			//loadUsers(stmt);
-			//loadWebLinks(stmt);
-			//loadMovies(stmt);
-			//loadBooks(stmt);
+			// loadUsers(stmt);
+			// loadWebLinks(stmt);
+			// loadMovies(stmt);
+			// loadBooks(stmt);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -196,8 +195,8 @@ public class DataStore {
 		for (String row : data) {
 			String[] values = row.split("\t");
 			Bookmark bookmark = BookmarkService.getInstance().createMovie(Long.parseLong(values[0]), values[1], "",
-					Integer.parseInt(values[2]), values[3].split(","), values[4].split(","), MovieGenre.valueOf(values[5]),
-					Double.parseDouble(values[6]));
+					Integer.parseInt(values[2]), values[3].split(","), values[4].split(","),
+					MovieGenre.valueOf(values[5]), Double.parseDouble(values[6]));
 			bookmarkList.add(bookmark);
 		}
 		bookmarks.add(bookmarkList);

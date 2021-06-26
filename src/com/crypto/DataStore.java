@@ -2,10 +2,12 @@ package com.crypto;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,18 +48,16 @@ public class DataStore {
 	}
 
 	public static void loadData() {
-		loadUsers();
-		loadWebLinks();
-		loadMovies();
-		loadBooks();
-
+		/*
+		 * loadUsers(); loadWebLinks(); loadMovies(); loadBooks();
+		 */
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Mytable", "sa2",
+			Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=crypto", "sa2",
 					"Test@123");
 			Statement stmt = conn.createStatement();
 			if (conn != null) {
@@ -67,13 +67,15 @@ public class DataStore {
 				System.out.println("Product name: " + dm.getDatabaseProductName());
 				System.out.println("Product version: " + dm.getDatabaseProductVersion());
 			}
-			String query = "select * from [dbo].[credit_scores]";
-			ResultSet rs = stmt.executeQuery(query);
-			System.out.println("S.No \t| empType \t| creditScore ");
-			System.out.println("----------------------------------------");
-			while (rs.next()) {
-				System.out.println(rs.getInt(1) + " \t| " + rs.getString(2) + " \t| " + rs.getInt(3));
-			}
+			loadBooks(stmt);
+			/*
+			 * String query = "select * from [dbo].[credit_scores]"; ResultSet rs =
+			 * stmt.executeQuery(query);
+			 * System.out.println("S.No \t| empType \t| creditScore ");
+			 * System.out.println("----------------------------------------"); while
+			 * (rs.next()) { System.out.println(rs.getInt(1) + " \t| " + rs.getString(2) +
+			 * " \t| " + rs.getInt(3)); }
+			 */
 			// loadUsers(stmt);
 			// loadWebLinks(stmt);
 			// loadMovies(stmt);
@@ -154,10 +156,50 @@ public class DataStore {
 		 */
 	}
 
+	private static void loadBooks(Statement stmt) throws SQLException {
+		// Loading values from database table
+		String query = "select b.id, title, publication_year, p.name, CONCAT(a.name,',') AS authors, "
+				+ "book_genre_id, amazon_rating, created_date from Book b, "
+				+ "Publisher p, Author a, Book_Author ba where b.publisher_id = p.id "
+				+ "and b.id = ba.book_id and ba.author_id = a.id";
+
+		ResultSet rs = stmt.executeQuery(query);
+
+		List<Bookmark> bookmarkList = new ArrayList<>();
+		while (rs.next()) {
+			long id = rs.getLong("id");
+			String title = rs.getString("title");
+			int publicationYear = rs.getInt("publication_year");
+			String publisher = rs.getString("name");
+			String[] authors = rs.getString("authors").split(",");
+			int genre_id = rs.getInt("book_genre_id");
+			BookGenre genre = BookGenre.values()[genre_id];
+			double amazonRating = rs.getDouble("amazon_rating");
+
+			Date createdDate = rs.getDate("created_date");
+			System.out.println("createdDate: " + createdDate);
+			Timestamp timeStamp = rs.getTimestamp(8);
+			System.out.println("timeStamp: " + timeStamp);
+			System.out.println("localDateTime: " + timeStamp.toLocalDateTime());
+
+			System.out.println("id: " + id + ", title: " + title + ", publication year: " + publicationYear
+					+ ", publisher: " + publisher + ", authors: " + String.join(", ", authors) + ", genre: " + genre
+					+ ", amazonRating: " + amazonRating);
+
+			Bookmark bookmark = BookmarkService.getInstance().createBook(id, title, "", publicationYear, publisher,
+					authors, genre, amazonRating);
+			bookmarkList.add(bookmark);
+		}
+		bookmarks.add(bookmarkList);
+
+	}
+
 	private static void loadBooks() {
+		// Loading values from text file
 
 		List<String> data = new ArrayList<>();
 		IOUtil.read(data, "Book");
+
 		List<Bookmark> bookmarkList = new ArrayList<>();
 		for (String row : data) {
 			String[] values = row.split("\t");
@@ -169,8 +211,9 @@ public class DataStore {
 
 		bookmarks.add(bookmarkList);
 		/*
-		 * bookmarks[2][0] = BookmarkService.getInstance().createBook(4000, "Walden",
-		 * "", 1854, "Wilder Publications", new String[] { "Henry David Thoreau" },
+		 * hard coded values. bookmarks[2][0] =
+		 * BookmarkService.getInstance().createBook(4000, "Walden", "", 1854,
+		 * "Wilder Publications", new String[] { "Henry David Thoreau" },
 		 * BookGenre.PHILOSOPHY, 4.3); bookmarks[2][1] =
 		 * BookmarkService.getInstance().createBook(4001,
 		 * "Self-Reliance and Other Essays", "", 1993, "Dover Publications", new

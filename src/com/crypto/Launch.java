@@ -15,15 +15,16 @@ public class Launch {
 
 	private static void loadData() {
 		System.out.println("1. Loading Data ...");
-		DataStore.loadData();
+		//DataStore.loadData();
+		DataStore.loadDataFromDB();
 
 		users = UserService.getInstance().getUsers();
 		bookmarks = BookmarkService.getInstance().getBookmarks();
 
-		/*System.out.println("2. Printing Data ...");
+		System.out.println("2. Printing Data ...");
 		printUserData();
 		printBookmarkData();
-		*/
+		
 	}
 
 	private static void printBookmarkData() {

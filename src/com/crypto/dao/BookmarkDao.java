@@ -1,13 +1,12 @@
 package com.crypto.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.crypto.DataStore;
+import com.crypto.LocalConnection;
 import com.crypto.entities.Book;
 import com.crypto.entities.Bookmark;
 import com.crypto.entities.Movie;
@@ -23,8 +22,7 @@ public class BookmarkDao {
 	public void saveBookmark(UserBookmark userBookmark) {
 
 		// Add data to DB
-		try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=crypto", "sa2",
-				"Test@123"); Statement stmt = conn.createStatement();) {
+		try (Statement stmt = LocalConnection.getLocalConnection()) {
 			if (userBookmark.getBookmark() instanceof Book) {
 				saveUserBook(userBookmark, stmt);
 			} else if (userBookmark.getBookmark() instanceof Movie) {
@@ -32,11 +30,10 @@ public class BookmarkDao {
 			} else {
 				saveUserWebLink(userBookmark, stmt);
 			}
-
+			LocalConnection.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		// Add data to runtime object.
 		// DataStore.add(userBookmark);
 	}
@@ -81,5 +78,49 @@ public class BookmarkDao {
 		}
 
 		return result;
+	}
+
+	public void updateKidFriendlyStatus(Bookmark bookmark) {
+		int kidFriendlyStatus = bookmark.getKidFriendlyStatus().ordinal();
+		long userId = bookmark.getKidFriendlyMarkedBy().getId();
+
+		String tableToUpdate = "Book";
+		if (bookmark instanceof Movie) {
+			tableToUpdate = "Movie";
+		} else if (bookmark instanceof WebLink) {
+			tableToUpdate = "WebLink";
+		}
+
+		try (Statement stmt = LocalConnection.getLocalConnection()) {
+
+			String query = "update " + tableToUpdate + " set kid_friendly_status = " + kidFriendlyStatus
+					+ ", kid_friendly_marked_by = " + userId + " where id = " + bookmark.getId();
+
+			System.out.println("Updated rows : " + stmt.executeUpdate(query));
+
+			LocalConnection.closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void sharedByInfo(Bookmark bookmark) {
+		long userId = bookmark.getSharedBy().getId();
+		String tableToUpdate = "Book";
+		if (bookmark instanceof WebLink) {
+			tableToUpdate = "WebLink";
+		}
+		try (Statement stmt = LocalConnection.getLocalConnection()) {
+			
+			String query = "update " + tableToUpdate + " set shared_by = " + userId + " where id = " + bookmark.getId();
+			
+			System.out.println("Updated rows : " + stmt.executeUpdate(query));
+			
+			LocalConnection.closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

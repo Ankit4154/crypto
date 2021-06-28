@@ -56,26 +56,12 @@ public class DataStore {
 	}
 
 	public static void loadDataFromDB() {
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=crypto", "sa2",
-					"Test@123");
-			Statement stmt = conn.createStatement();
-			if (conn != null) {
-				DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
-				System.out.println("Driver name: " + dm.getDriverName());
-				System.out.println("Driver version: " + dm.getDriverVersion());
-				System.out.println("Product name: " + dm.getDatabaseProductName());
-				System.out.println("Product version: " + dm.getDatabaseProductVersion());
-			}
+		try (Statement stmt = LocalConnection.getLocalConnection()) {
 			loadUsers(stmt);
 			loadBooks(stmt);
 			loadMovies(stmt);
 			loadWebLinks(stmt);
+			LocalConnection.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

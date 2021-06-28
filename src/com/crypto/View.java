@@ -22,7 +22,7 @@ public class View {
 					if (isBookmarked) {
 						bookmarkCount++;
 
-						BookmarkController.getInstance().saveUserBookmark(user, bookmark);
+						//BookmarkController.getInstance().saveUserBookmark(user, bookmark);
 
 						System.out.println("new item bookmarked : " + bookmark);
 					}
@@ -57,8 +57,9 @@ public class View {
 	}
 
 	private static KidFriendlyStatus getKidFriendlyStatusDecision(Bookmark bookmark) {
-		return Math.random() < 0.4 ? KidFriendlyStatus.APPROVED
-				: (Math.random() >= 0.4 && Math.random() < 0.8) ? KidFriendlyStatus.REJECTED
+		double decision = Math.random();
+		return decision < 0.4 ? KidFriendlyStatus.APPROVED
+				: (decision >= 0.4 && decision < 0.8) ? KidFriendlyStatus.REJECTED
 						: KidFriendlyStatus.UNKNOWN;
 	}
 

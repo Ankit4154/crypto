@@ -21,10 +21,11 @@ public class Launch {
 		users = UserService.getInstance().getUsers();
 		bookmarks = BookmarkService.getInstance().getBookmarks();
 
+		/*
 		System.out.println("2. Printing Data ...");
 		printUserData();
 		printBookmarkData();
-		
+		*/
 	}
 
 	private static void printBookmarkData() {
@@ -51,7 +52,7 @@ public class Launch {
 
 	public static void main(String args[]) {
 		loadData();
-		//start();
+		start();
 		
 		// run background jobs
 		//runDownloaderJob();

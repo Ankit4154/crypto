@@ -14,15 +14,21 @@ import com.crypto.entities.UserBookmark;
 import com.crypto.entities.WebLink;
 
 public class BookmarkDao {
+	
+	private static Statement stmt;
 
 	public List<List<Bookmark>> getBookmarks() {
 		return DataStore.getBookmarks();
+	}
+	
+	public BookmarkDao() {
+		stmt = LocalConnection.getLocalConnection();
 	}
 
 	public void saveBookmark(UserBookmark userBookmark) {
 
 		// Add data to DB
-		try (Statement stmt = LocalConnection.getLocalConnection()) {
+		try {
 			if (userBookmark.getBookmark() instanceof Book) {
 				saveUserBook(userBookmark, stmt);
 			} else if (userBookmark.getBookmark() instanceof Movie) {
@@ -30,7 +36,7 @@ public class BookmarkDao {
 			} else {
 				saveUserWebLink(userBookmark, stmt);
 			}
-			LocalConnection.closeConnection();
+			//LocalConnection.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -91,14 +97,14 @@ public class BookmarkDao {
 			tableToUpdate = "WebLink";
 		}
 
-		try (Statement stmt = LocalConnection.getLocalConnection()) {
+		try {
 
 			String query = "update " + tableToUpdate + " set kid_friendly_status = " + kidFriendlyStatus
 					+ ", kid_friendly_marked_by = " + userId + " where id = " + bookmark.getId();
 
 			System.out.println("Updated rows : " + stmt.executeUpdate(query));
 
-			LocalConnection.closeConnection();
+			//LocalConnection.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -111,13 +117,13 @@ public class BookmarkDao {
 		if (bookmark instanceof WebLink) {
 			tableToUpdate = "WebLink";
 		}
-		try (Statement stmt = LocalConnection.getLocalConnection()) {
+		try {
 			
 			String query = "update " + tableToUpdate + " set shared_by = " + userId + " where id = " + bookmark.getId();
 			
 			System.out.println("Updated rows : " + stmt.executeUpdate(query));
 			
-			LocalConnection.closeConnection();
+			//LocalConnection.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

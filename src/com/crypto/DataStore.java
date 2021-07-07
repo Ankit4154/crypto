@@ -36,6 +36,7 @@ public class DataStore {
 	 * public static final int TOTAL_USER_COUNT = 5;
 	 */
 	public static List<User> users = new ArrayList<>();
+	private static Statement stmt = LocalConnection.getLocalConnection();
 
 	public static List<User> getUsers() {
 		return users;
@@ -56,12 +57,12 @@ public class DataStore {
 	}
 
 	public static void loadDataFromDB() {
-		try (Statement stmt = LocalConnection.getLocalConnection()) {
+		try {
 			loadUsers(stmt);
 			loadBooks(stmt);
 			loadMovies(stmt);
 			loadWebLinks(stmt);
-			LocalConnection.closeConnection();
+			//LocalConnection.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

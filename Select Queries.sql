@@ -68,3 +68,17 @@ FROM WebLink
 
 SELECT kid_friendly_marked_by, *
 FROM Movie
+
+-- Populate getBooks method
+select b.id, b.title, b.image_url, b.publication_year,p.name, 
+STUFF((SELECT ', ' + a.name
+           FROM Author a
+		   join Book_Author ba
+		   on a.id = ba.author_id
+		   and ba.book_id=b.id
+          FOR XML PATH('')), 1, 2, '') as authors,
+b.book_genre_id, b.amazon_rating, created_date from Book b, Author a, Publisher p, 
+Book_Author ba where b.publisher_id=p.id and b.id = ba.book_id and ba.author_id = a.id
+and b.id not in (select ub.book_id from Users u, Users_Book ub where u.id = 5 and u.id = ub.users_id)
+group by b.id, b.title, b.image_url, b.publication_year, p.name, b.book_genre_id, b.amazon_rating, b.created_date
+;

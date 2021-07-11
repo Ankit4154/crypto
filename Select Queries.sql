@@ -9,7 +9,7 @@ select title, name from Book, Publisher
 select title, name from Book inner join Publisher on Book.publisher_id=Publisher.id
 
 -- Populate loadBooks method
-select b.id, b.title, b.publication_year,p.name, 
+select b.id, b.title,b.image_url, b.publication_year,p.name, 
 STUFF((SELECT ', ' + a.name
            FROM Author a
 		   join Book_Author ba
@@ -18,8 +18,8 @@ STUFF((SELECT ', ' + a.name
           FOR XML PATH('')), 1, 2, '') as authors,
 b.book_genre_id, b.amazon_rating, created_date from Book b, Author a, Publisher p, 
 Book_Author ba where b.publisher_id=p.id and b.id = ba.book_id and ba.author_id = a.id
-group by b.id,b.title, b.publication_year, p.name, b.book_genre_id, b.amazon_rating, b.created_date
-;
+group by b.id,b.title, b.image_url, b.publication_year, p.name, b.book_genre_id, b.amazon_rating, b.created_date
+
 
 select * from Actor
 select * from Movie

@@ -233,3 +233,6 @@ INSERT INTO Users (email, password, first_name, last_name, gender_id, user_type_
 VALUES ('ajay@crypto.com', 'test', 'ajay', 'T', 0, 2);
 
 
+--removeUserBook method
+delete from Users_Book where users_id = 1
+and book_id = 2
